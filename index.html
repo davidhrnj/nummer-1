@@ -22,7 +22,7 @@
 
     <script>
         // Dieser Teil liest das Keyword aus der URL (z.B. /gutschein-hamburg)
-        const path = window.location.pathname.replace('/', '').replace(/-/g, ' ');
+        const path = decodeURIComponent(window.location.pathname).replace('/', '').replace(/-/g, ' ');
         if (path && path !== "index.html") {
             const formattedKeyword = path.charAt(0).toUpperCase() + path.slice(1);
             document.getElementById('dynamic-title').innerText = formattedKeyword + " - Jetzt sichern";

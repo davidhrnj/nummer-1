@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="dynamic-title">Lade Angebot...</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 400px; }
+        h1 { color: #333; font-size: 1.5rem; }
+        p { color: #666; }
+        .btn { display: inline-block; background: #007bff; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 id="main-heading">Exklusives Angebot gefunden!</h1>
+        <p id="description">Klicke unten, um dir deinen Zugang zu sichern.</p>
+        <!-- HIER DEINEN LINK VON CPALEAD EINSETZEN -->
+        <a href="https://www.mobtrk.link/view.php?id=5542793&pub=3292893" class="btn" id="cta-button">JETZT FREISCHALTEN</a>
+    </div>
+
+    <script>
+        // Dieser Teil liest das Keyword aus der URL (z.B. /gutschein-hamburg)
+        const path = window.location.pathname.replace('/', '').replace(/-/g, ' ');
+        if (path && path !== "index.html") {
+            const formattedKeyword = path.charAt(0).toUpperCase() + path.slice(1);
+            document.getElementById('dynamic-title').innerText = formattedKeyword + " - Jetzt sichern";
+            document.getElementById('main-heading').innerText = "Dein Deal für: " + formattedKeyword;
+        }
+    </script>
+</body>
+</html>

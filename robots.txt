@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://deine-domain.vercel.app/liste.txt

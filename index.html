@@ -1,59 +1,48 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta name="google-site-verification" content="rXA2I1CmVnUcTcJmliBGdeZ6fG5FfYQFsoM_hlV9-qM" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="dynamic-title">Lade Angebot...</title>
+    <title>Finanz Angebot</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; margin: 0; }
-        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 400px; }
-        h1 { color: #333; font-size: 1.5rem; }
-        p { color: #666; }
-        .btn { display: inline-block; background: #007bff; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; }
+        body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 20px; text-align: center; }
+        .main-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; margin: 20px auto; }
+        .verzeichnis-box { margin-top: 50px; padding: 20px; background: #fff; border: 1px solid #ddd; border-radius: 10px; max-width: 600px; margin: 40px auto; text-align: left; }
+        #link-list { max-height: 200px; overflow-y: scroll; border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px; }
+        a { display: block; padding: 5px 0; color: #007bff; text-decoration: none; font-size: 14px; border-bottom: 1px dotted #eee; }
     </style>
 </head>
-<div class="card">
-    <h1 id="main-heading">Exklusives Angebot gefunden!</h1>
-    <p id="description">Klicke unten, um dir deinen Zugang zu sichern.</p>
-    
-    <a href="https://www.mobtrk.link/view.php?id=5542793&pub=3292893" class="btn" id="cta-button">JETZT FREISCHALTEN</a>
-    
-    <!-- DIESER NEUE TEIL IST WICHTIG FÜR GOOGLE -->
-    <div id="faq-content"></div>
-</div>
+<body>
+
+    <div class="main-card">
+        <h1>Dein Finanz Angebot</h1>
+        <p>Hier finden Sie die besten Konditionen...</p>
+        </div>
+
+    <div class="verzeichnis-box">
+        <h3>Finanz-Themen Index</h3>
+        <div id="link-list">Lade Themen...</div>
+    </div>
 
     <script>
-    const path = decodeURIComponent(window.location.pathname).replace('/', '').replace(/-/g, ' ');
-    
-    if (path && path !== "index.html") {
-        // Macht den ersten Buchstaben groß
-        const formattedKeyword = path.charAt(0).toUpperCase() + path.slice(1);
-        
-        // 1. Titel & Haupt-Überschrift (wie bisher)
-        document.getElementById('dynamic-title').innerText = formattedKeyword + " - Jetzt sichern";
-        document.getElementById('main-heading').innerText = "Dein Deal für: " + formattedKeyword;
-        
-        // 2. Beschreibung dynamisch anpassen
-        const descElement = document.getElementById('description');
-        if (descElement) {
-            descElement.innerHTML = `Suchst du nach <strong>${formattedKeyword}</strong>? <br> Nutze unser exklusives Finanz-Portal, um bei deinem Thema das Maximum herauszuholen. Klicke unten, um sofort zu starten.`;
-        }
+        fetch('/liste.txt')
+            .then(r => r.text())
+            .then(data => {
+                const container = document.getElementById('link-list');
+                const lines = data.split('\n');
+                container.innerHTML = '';
+                lines.forEach(line => {
+                    if(line.trim()) {
+                        const a = document.createElement('a');
+                        a.href = "/" + line.trim();
+                        a.textContent = line.trim().replace(/-/g, ' ').toUpperCase();
+                        container.appendChild(a);
+                    }
+                });
+            }).catch(e => {
+                document.getElementById('link-list').innerText = "Verzeichnis wird geladen...";
+            });
+    </script>
 
-        // 3. NEU: FAQ-Bereich dynamisch füllen
-        const faqBox = document.getElementById('faq-content');
-        if (faqBox) {
-            faqBox.innerHTML = `
-                <div style="margin-top: 30px; padding: 20px; background: #f4f7f6; border-radius: 10px; text-align: left; font-size: 0.9rem;">
-                    <h3 style="color: #333;">Häufige Fragen zu ${formattedKeyword}</h3>
-                    <p><strong>Warum ist ${formattedKeyword} aktuell so beliebt?</strong><br>
-                    In der aktuellen Finanzlage suchen viele nach ${formattedKeyword}, um Kosten zu senken oder Vorteile zu maximieren.</p>
-                    <p><strong>Wie funktioniert die Freischaltung?</strong><br>
-                    Klicke einfach auf den Button oben. Du wirst direkt zum Anbieter weitergeleitet, um deinen Zugang für ${formattedKeyword} zu aktivieren.</p>
-                </div>
-            `;
-        }
-    }
-</script>
 </body>
 </html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Übersicht</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f0f0; padding: 50px; text-align: center; }
+        .box { background: white; padding: 30px; border-radius: 10px; max-width: 600px; margin: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        #l { text-align: left; margin-top: 20px; max-height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; }
+        a { display: block; padding: 5px; color: #007bff; text-decoration: none; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Finanz Übersicht</h1>
+        <div id="l">Lade Themen...</div>
+    </div>
+    <script>
+        fetch('/liste.txt').then(r => r.text()).then(d => {
+            const lines = d.split('\n');
+            const target = document.getElementById('l');
+            target.innerHTML = '';
+            lines.forEach(line => {
+                if(line.trim()) {
+                    const a = document.createElement('a');
+                    a.href = "/" + line.trim();
+                    a.textContent = line.trim().replace(/-/g, ' ').toUpperCase();
+                    target.appendChild(a);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

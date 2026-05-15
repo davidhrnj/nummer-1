@@ -13,21 +13,46 @@
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1 id="main-heading">Exklusives Angebot gefunden!</h1>
-        <p id="description">Klicke unten, um dir deinen Zugang zu sichern.</p>
-        <!-- HIER DEINEN LINK VON CPALEAD EINSETZEN -->
-        <a href="DEIN_AFFILIATE_LINK_HIER" class="btn" id="cta-button">JETZT FREISCHALTEN</a>
-    </div>
-
-    <script>
-        // Dieser Teil liest das Keyword aus der URL (z.B. /gutschein-hamburg)
-        const path = window.location.pathname.replace('/', '').replace(/-/g, ' ');
-        if (path && path !== "index.html") {
-            const formattedKeyword = path.charAt(0).toUpperCase() + path.slice(1);
-            document.getElementById('dynamic-title').innerText = formattedKeyword + " - Jetzt sichern";
-            document.getElementById('main-heading').innerText = "Dein Deal für: " + formattedKeyword;
+   <div class="card">
+    <h1 id="main-heading">Exklusives Angebot gefunden!</h1>
+    <p id="description">Klicke unten, um dir deinen Zugang zu sichern.</p>
+    
+    <a href="https://www.mobtrk.link/view.php?id=5542793&pub=3292893" class="btn" id="cta-button">JETZT FREISCHALTEN</a>
+    
+    <!-- DIESER NEUE TEIL IST WICHTIG FÜR GOOGLE -->
+    <div id="faq-content"></div>
+</div>
+   <script>
+    const path = decodeURIComponent(window.location.pathname).replace('/', '').replace(/-/g, ' ');
+    
+    if (path && path !== "index.html") {
+        // Macht den ersten Buchstaben groß
+        const formattedKeyword = path.charAt(0).toUpperCase() + path.slice(1);
+        
+        // 1. Titel & Haupt-Überschrift (wie bisher)
+        document.getElementById('dynamic-title').innerText = formattedKeyword + " - Jetzt sichern";
+        document.getElementById('main-heading').innerText = "Dein Deal für: " + formattedKeyword;
+        
+        // 2. Beschreibung dynamisch anpassen
+        const descElement = document.getElementById('description');
+        if (descElement) {
+            descElement.innerHTML = `Suchst du nach <strong>${formattedKeyword}</strong>? <br> Nutze unser exklusives Finanz-Portal, um bei deinem Thema das Maximum herauszuholen. Klicke unten, um sofort zu starten.`;
         }
-    </script>
+
+        // 3. NEU: FAQ-Bereich dynamisch füllen
+        const faqBox = document.getElementById('faq-content');
+        if (faqBox) {
+            faqBox.innerHTML = `
+                <div style="margin-top: 30px; padding: 20px; background: #f4f7f6; border-radius: 10px; text-align: left; font-size: 0.9rem;">
+                    <h3 style="color: #333;">Häufige Fragen zu ${formattedKeyword}</h3>
+                    <p><strong>Warum ist ${formattedKeyword} aktuell so beliebt?</strong><br>
+                    In der aktuellen Finanzlage suchen viele nach ${formattedKeyword}, um Kosten zu senken oder Vorteile zu maximieren.</p>
+                    <p><strong>Wie funktioniert die Freischaltung?</strong><br>
+                    Klicke einfach auf den Button oben. Du wirst direkt zum Anbieter weitergeleitet, um deinen Zugang für ${formattedKeyword} zu aktivieren.</p>
+                </div>
+            `;
+        }
+    }
+</script>
 </body>
 </html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Sitemap - Alle Finanz-Themen</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <div class="card">
+        <h1>Übersicht aller Finanz-Vorteile</h1>
+        <p>Wähle dein Thema aus unserer Datenbank:</p>
+        <div id="link-container" style="text-align: left; max-height: 500px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px;">
+            </div>
+    </div>
+
+    <script>
+        // Wir laden deine liste.txt und erstellen daraus echte Links
+        fetch('liste.txt')
+            .then(response => response.text())
+            .then(data => {
+                const lines = data.split('\n');
+                const container = document.getElementById('link-container');
+                lines.forEach(line => {
+                    if(line.trim() !== "") {
+                        const a = document.createElement('a');
+                        const linkText = line.replace(/-/g, ' ');
+                        a.href = "/" + line.trim();
+                        a.innerText = linkText.charAt(0).toUpperCase() + linkText.slice(1);
+                        a.style.display = "block";
+                        a.style.marginBottom = "5px";
+                        container.appendChild(a);
+                    }
+                });
+            });
+    </script>
+</body>
+</html>

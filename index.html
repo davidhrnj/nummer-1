@@ -3,44 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanz Angebot</title>
+    <title>Finanz-Angebot | Übersicht</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 20px; text-align: center; }
-        .main-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; margin: 20px auto; }
-        .verzeichnis-box { margin-top: 50px; padding: 20px; background: #fff; border: 1px solid #ddd; border-radius: 10px; max-width: 600px; margin: 40px auto; text-align: left; }
-        #link-list { max-height: 200px; overflow-y: scroll; border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px; }
-        a { display: block; padding: 5px 0; color: #007bff; text-decoration: none; font-size: 14px; border-bottom: 1px dotted #eee; }
+        /* Dein Haupt-Design */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h1 { color: #1a73e8; }
+        p { line-height: 1.6; }
+        
+        /* Das neue Themen-Verzeichnis unten */
+        .sitemap-section { margin-top: 50px; padding-top: 20px; border-top: 2px solid #eee; text-align: left; }
+        .link-box { max-height: 250px; overflow-y: auto; background: #fafafa; border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .sitemap-link { display: block; padding: 6px 0; color: #1a73e8; text-decoration: none; font-size: 13px; border-bottom: 1px solid #eee; }
+        .sitemap-link:hover { text-decoration: underline; background: #f1f1f1; }
     </style>
 </head>
 <body>
 
-    <div class="main-card">
-        <h1>Dein Finanz Angebot</h1>
-        <p>Hier finden Sie die besten Konditionen...</p>
+    <div class="container">
+        <h1>Willkommen bei deinem Finanz-Vergleich</h1>
+        <p>Wir finden für Sie die passenden Konditionen. Nutzen Sie unsere automatisierte Suche, um die besten Ergebnisse für Ihr Anliegen zu erhalten.</p>
+        
+        <div class="sitemap-section">
+            <h3>Themen-Verzeichnis (pSEO)</h3>
+            <p style="font-size: 12px; color: #666;">Wählen Sie eines unserer tausenden Fachthemen aus:</p>
+            <div id="link-list" class="link-box">
+                Lade Verzeichnis...
+            </div>
         </div>
-
-    <div class="verzeichnis-box">
-        <h3>Finanz-Themen Index</h3>
-        <div id="link-list">Lade Themen...</div>
     </div>
 
     <script>
+        // Das Script lädt die 20.000 Keywords aus deiner liste.txt
         fetch('/liste.txt')
-            .then(r => r.text())
+            .then(response => {
+                if (!response.ok) throw new Error('Liste nicht gefunden');
+                return response.text();
+            })
             .then(data => {
                 const container = document.getElementById('link-list');
                 const lines = data.split('\n');
-                container.innerHTML = '';
+                container.innerHTML = ''; // "Lade..." entfernen
+                
                 lines.forEach(line => {
-                    if(line.trim()) {
+                    const clean = line.trim();
+                    if (clean !== "") {
                         const a = document.createElement('a');
-                        a.href = "/" + line.trim();
-                        a.textContent = line.trim().replace(/-/g, ' ').toUpperCase();
+                        a.href = "/" + clean;
+                        a.className = "sitemap-link";
+                        // Macht aus "kredit-ohne-schufa" -> "KREDIT OHNE SCHUFA"
+                        a.textContent = clean.replace(/-/g, ' ').toUpperCase();
                         container.appendChild(a);
                     }
                 });
-            }).catch(e => {
-                document.getElementById('link-list').innerText = "Verzeichnis wird geladen...";
+            })
+            .catch(err => {
+                document.getElementById('link-list').innerText = "Verzeichnis momentan nicht verfügbar.";
+                console.error(err);
             });
     </script>
 

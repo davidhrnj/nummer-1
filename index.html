@@ -55,5 +55,37 @@
         }
     }
 </script>
+    <div style="margin-top: 50px; padding: 20px; background: #f1f1f1; border-top: 2px solid #ccc; font-family: sans-serif; clear: both;">
+    <h3 style="color: #333; text-align: center;">Finanz-Themen Verzeichnis</h3>
+    <div id="footer-links" style="max-height: 200px; overflow-y: scroll; background: white; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+        Lade Themen...
+    </div>
+</div>
+
+<script>
+    fetch('/liste.txt')
+        .then(response => response.text())
+        .then(text => {
+            const listContainer = document.getElementById('footer-links');
+            const lines = text.split('\n');
+            listContainer.innerHTML = ''; 
+            lines.forEach(line => {
+                if(line.trim() !== "") {
+                    const link = document.createElement('a');
+                    link.href = "/" + line.trim();
+                    link.textContent = line.trim().replace(/-/g, ' ').toUpperCase();
+                    link.style.display = "block";
+                    link.style.padding = "5px 0";
+                    link.style.color = "#007bff";
+                    link.style.textDecoration = "none";
+                    link.style.fontSize = "13px";
+                    link.style.borderBottom = "1px solid #eee";
+                    listContainer.appendChild(link);
+                }
+            });
+        }).catch(err => {
+            document.getElementById('footer-links').innerText = "Verzeichnis momentan nicht verfügbar.";
+        });
+</script>
 </body>
 </html>

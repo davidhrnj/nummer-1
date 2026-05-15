@@ -2,43 +2,35 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sitemap - Alle Finanz-Themen</title>
     <style>
         body { font-family: sans-serif; background: #f4f4f4; padding: 20px; text-align: center; }
         .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 800px; margin: auto; }
-        #link-container { text-align: left; max-height: 600px; overflow-y: auto; border: 1px solid #eee; padding: 15px; margin-top: 20px; }
-        a { display: block; margin-bottom: 8px; color: #007bff; text-decoration: none; font-size: 14px; }
-        a:hover { text-decoration: underline; }
+        #link-container { text-align: left; max-height: 500px; overflow-y: auto; border: 1px solid #eee; padding: 15px; margin-top: 20px; background: #fff; }
+        a { display: block; margin-bottom: 8px; color: #007bff; text-decoration: none; }
     </style>
 </head>
 <body>
     <div class="card">
         <h1>Finanz-Themen Übersicht</h1>
-        <p>Hier finden Sie alle aktuellen Optimierungsmöglichkeiten:</p>
+        <p>Wähle ein Thema aus:</p>
         <div id="link-container">Lade Themen...</div>
     </div>
-
     <script>
-        fetch('liste.txt')
-            .then(response => response.text())
-            .then(data => {
-                const lines = data.split('\n');
-                const container = document.getElementById('link-container');
-                container.innerHTML = ''; 
-                lines.forEach(line => {
-                    if(line.trim() !== "") {
+        fetch('/liste.txt')
+            .then(r => r.text())
+            .then(t => {
+                const lines = t.split('\n');
+                const c = document.getElementById('link-container');
+                c.innerHTML = ''; 
+                lines.forEach(l => {
+                    if(l.trim() !== "") {
                         const a = document.createElement('a');
-                        const cleanPath = line.trim();
-                        const linkText = cleanPath.replace(/-/g, ' ');
-                        a.href = "/" + cleanPath;
-                        a.innerText = linkText.charAt(0).toUpperCase() + linkText.slice(1);
-                        container.appendChild(a);
+                        a.href = "/" + l.trim();
+                        a.innerText = l.trim().replace(/-/g, ' ').toUpperCase();
+                        c.appendChild(a);
                     }
                 });
-            })
-            .catch(err => {
-                document.getElementById('link-container').innerText = 'Fehler beim Laden der Liste.';
             });
     </script>
 </body>

@@ -3,63 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanz-Angebot | Übersicht</title>
+    <title>Wird geladen...</title>
     <style>
-        /* Dein Haupt-Design */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        h1 { color: #1a73e8; }
-        p { line-height: 1.6; }
+        body { 
+            font-family: sans-serif; 
+            background-color: #f4f7f6; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+        }
+        .card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            margin-top: 50px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* Das neue Themen-Verzeichnis unten */
-        .sitemap-section { margin-top: 50px; padding-top: 20px; border-top: 2px solid #eee; text-align: left; }
-        .link-box { max-height: 250px; overflow-y: auto; background: #fafafa; border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-top: 15px; }
-        .sitemap-link { display: block; padding: 6px 0; color: #1a73e8; text-decoration: none; font-size: 13px; border-bottom: 1px solid #eee; }
-        .sitemap-link:hover { text-decoration: underline; background: #f1f1f1; }
+        /* Das Verzeichnis ganz unten für Google */
+        .sitemap-footer { 
+            margin-top: 100px; 
+            width: 100%; 
+            max-width: 600px; 
+            padding: 20px; 
+            text-align: left; 
+        }
+        #link-list { 
+            max-height: 150px; 
+            overflow-y: auto; 
+            background: #fff; 
+            border: 1px solid #ddd; 
+            padding: 10px; 
+            border-radius: 5px;
+        }
+        a { display: block; color: #3498db; text-decoration: none; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #eee; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Willkommen bei deinem Finanz-Vergleich</h1>
-        <p>Wir finden für Sie die passenden Konditionen. Nutzen Sie unsere automatisierte Suche, um die besten Ergebnisse für Ihr Anliegen zu erhalten.</p>
-        
-        <div class="sitemap-section">
-            <h3>Themen-Verzeichnis (pSEO)</h3>
-            <p style="font-size: 12px; color: #666;">Wählen Sie eines unserer tausenden Fachthemen aus:</p>
-            <div id="link-list" class="link-box">
-                Lade Verzeichnis...
-            </div>
-        </div>
+    <div class="card">
+        <div class="spinner"></div>
+        <h1>Angebot wird erstellt</h1>
+        <p>Bitte warten Sie einen Moment, während wir die besten Konditionen für Sie zusammenstellen...</p>
+    </div>
+
+    <div class="sitemap-footer">
+        <p style="font-size: 11px; color: #999;">Verzeichnis:</p>
+        <div id="link-list">Lade Themen...</div>
     </div>
 
     <script>
-        // Das Script lädt die 20.000 Keywords aus deiner liste.txt
+        // Lädt die Keywords dynamisch in den Footer
         fetch('/liste.txt')
-            .then(response => {
-                if (!response.ok) throw new Error('Liste nicht gefunden');
-                return response.text();
-            })
+            .then(r => r.text())
             .then(data => {
                 const container = document.getElementById('link-list');
                 const lines = data.split('\n');
-                container.innerHTML = ''; // "Lade..." entfernen
-                
+                container.innerHTML = '';
                 lines.forEach(line => {
-                    const clean = line.trim();
-                    if (clean !== "") {
+                    if(line.trim()) {
                         const a = document.createElement('a');
-                        a.href = "/" + clean;
-                        a.className = "sitemap-link";
-                        // Macht aus "kredit-ohne-schufa" -> "KREDIT OHNE SCHUFA"
-                        a.textContent = clean.replace(/-/g, ' ').toUpperCase();
+                        a.href = "/" + line.trim();
+                        a.textContent = line.trim().replace(/-/g, ' ').toUpperCase();
                         container.appendChild(a);
                     }
                 });
-            })
-            .catch(err => {
-                document.getElementById('link-list').innerText = "Verzeichnis momentan nicht verfügbar.";
-                console.error(err);
             });
     </script>
 

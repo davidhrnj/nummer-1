@@ -55,8 +55,8 @@
         }
     }
 </script>
-    <div style="margin-top: 50px; padding: 20px; background: #f1f1f1; border-top: 2px solid #ccc; font-family: sans-serif; clear: both;">
-    <h3 style="color: #333; text-align: center;">Finanz-Themen Verzeichnis</h3>
+<div style="margin-top: 50px; padding: 20px; background: #f1f1f1; border-top: 2px solid #ccc; font-family: sans-serif; clear: both; color: #333;">
+    <h3 style="text-align: center;">Finanz-Themen Verzeichnis</h3>
     <div id="footer-links" style="max-height: 200px; overflow-y: scroll; background: white; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
         Lade Themen...
     </div>
@@ -64,28 +64,21 @@
 
 <script>
     fetch('/liste.txt')
-        .then(response => response.text())
-        .then(text => {
-            const listContainer = document.getElementById('footer-links');
-            const lines = text.split('\n');
-            listContainer.innerHTML = ''; 
-            lines.forEach(line => {
-                if(line.trim() !== "") {
-                    const link = document.createElement('a');
-                    link.href = "/" + line.trim();
-                    link.textContent = line.trim().replace(/-/g, ' ').toUpperCase();
-                    link.style.display = "block";
-                    link.style.padding = "5px 0";
-                    link.style.color = "#007bff";
-                    link.style.textDecoration = "none";
-                    link.style.fontSize = "13px";
-                    link.style.borderBottom = "1px solid #eee";
-                    listContainer.appendChild(link);
+        .then(r => r.text())
+        .then(t => {
+            const container = document.getElementById('footer-links');
+            const zeilen = t.split('\n');
+            container.innerHTML = ''; 
+            zeilen.forEach(z => {
+                if(z.trim()) {
+                    const a = document.createElement('a');
+                    a.href = "/" + z.trim();
+                    a.textContent = z.trim().replace(/-/g, ' ').toUpperCase();
+                    a.style.cssText = "display:block; padding:5px; color:#007bff; text-decoration:none; font-size:13px; border-bottom:1px solid #eee;";
+                    container.appendChild(a);
                 }
             });
-        }).catch(err => {
-            document.getElementById('footer-links').innerText = "Verzeichnis momentan nicht verfügbar.";
-        });
+        }).catch(e => { document.getElementById('footer-links').innerText = "Liste lädt noch..."; });
 </script>
 </body>
 </html>
